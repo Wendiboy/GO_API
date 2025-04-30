@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	middleware "github.com/labstack/echo/v4/middleware"
 )
@@ -13,7 +14,7 @@ type task struct {
 	TaskBody string
 }
 
-var Tasks = []task{{"3", "fdfdf"}}
+var Tasks = []task{}
 
 type requestBody struct {
 	Task string `json:"task"`
@@ -24,7 +25,7 @@ func postHandler(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	Tasks = append(Tasks, task{"1", req.Task})
+	Tasks = append(Tasks, task{uuid.NewString(), req.Task})
 	return c.JSON(http.StatusOK, "OK")
 }
 
