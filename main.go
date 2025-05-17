@@ -25,8 +25,9 @@ func postHandler(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	Tasks = append(Tasks, task{uuid.NewString(), req.Task})
-	return c.JSON(http.StatusOK, "OK")
+	postTask := task{uuid.NewString(), req.Task}
+	Tasks = append(Tasks, postTask)
+	return c.JSON(http.StatusOK, postTask)
 }
 
 func getHandler(c echo.Context) error {
