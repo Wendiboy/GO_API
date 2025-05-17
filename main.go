@@ -68,9 +68,9 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
-	e.POST("/", postHandler)
-	e.GET("/", getHandler)
-	e.PATCH("/:id", patchHandler)
-	e.DELETE("/:id", deleteHandler)
+	e.POST("/tasks", postHandler)
+	e.GET("/tasks", getHandler)
+	e.PATCH("/tasks/:id", patchHandler)
+	e.DELETE("/tasks/:id", deleteHandler)
 	e.Start("localhost:8080")
 }
