@@ -58,7 +58,7 @@ func (h *TaskHandler) PatchTask(c echo.Context) error {
 	updatedTask, err := h.service.UpdateTask(id, req.Task, req.IsDone)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Could not delete task"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Could not update task"})
 	}
 
 	return c.JSON(http.StatusOK, updatedTask)

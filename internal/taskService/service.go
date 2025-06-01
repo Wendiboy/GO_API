@@ -20,7 +20,7 @@ func NewTaskService(r TaskRepository) TaskService {
 
 func (s taskService) CreateTask(taskBody string, isDone bool) (Task, error) {
 	task := Task{
-		ID:       uuid.NewString(),
+		Id:       uuid.NewString(),
 		TaskBody: taskBody,
 		Is_done:  isDone,
 	}

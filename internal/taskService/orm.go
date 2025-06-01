@@ -1,9 +1,9 @@
 package taskService
 
 type Task struct {
-	ID       string
-	TaskBody string
-	Is_done  bool
+	Id       string `json:"id"`
+	TaskBody string `json:"taskBody"`
+	Is_done  bool   `json:"is_done"`
 }
 
 type RequestBody struct {
