@@ -1,7 +1,6 @@
 package db
 
 import (
-	"GO_API/internal/taskService"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -19,11 +18,6 @@ func InitDB() (*gorm.DB, error) {
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v ", err)
-	}
-
-	// Запускаем автомиграцию на основе структуры Task
-	if err := db.AutoMigrate(&taskService.Task{}); err != nil {
-		log.Fatalf("Could not migrate: %v ", err)
 	}
 
 	return db, nil
