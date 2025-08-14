@@ -3,10 +3,10 @@ package taskService
 import "github.com/google/uuid"
 
 type TaskService interface {
-	CreateTask(taskBody string, isDone bool) (Task, error)
+	CreateTask(task Task) (Task, error)
 	GetAllTasks() ([]Task, error)
 	GetTaskById(id string) (Task, error)
-	UpdateTask(id string, taskBody string, isDone bool) (Task, error)
+	UpdateTask(updatedTask Task) (Task, error)
 	DeleteTask(id string) error
 }
 
@@ -18,12 +18,8 @@ func NewTaskService(r TaskRepository) TaskService {
 	return &taskService{repo: r}
 }
 
-func (s taskService) CreateTask(taskBody string, isDone bool) (Task, error) {
-	task := Task{
-		Id:       uuid.NewString(),
-		TaskBody: taskBody,
-		Is_done:  isDone,
-	}
+func (s taskService) CreateTask(task Task) (Task, error) {
+	task.Id = uuid.NewString()
 
 	if err := s.repo.CreateTask(task); err != nil {
 		return Task{}, err
@@ -47,15 +43,16 @@ func (s taskService) GetTaskById(id string) (Task, error) {
 	return s.repo.GetTaskById(id)
 }
 
-func (s taskService) UpdateTask(id string, taskBody string, isDone bool) (Task, error) {
-	task, err := s.repo.GetTaskById(id)
+func (s taskService) UpdateTask(updatedTask Task) (Task, error) {
+
+	task, err := s.repo.GetTaskById(updatedTask.Id)
 
 	if err != nil {
 		return Task{}, err
 	}
 
-	task.TaskBody = taskBody
-	task.Is_done = isDone
+	task.TaskBody = updatedTask.TaskBody
+	task.Is_done = updatedTask.Is_done
 
 	if err := s.repo.UpdateTask(task); err != nil {
 		return Task{}, err

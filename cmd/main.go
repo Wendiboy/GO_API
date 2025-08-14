@@ -3,6 +3,7 @@ package main
 import (
 	"GO_API/internal/db"
 	"GO_API/internal/handlers"
+	"GO_API/internal/web/tasks"
 
 	"GO_API/internal/taskService"
 	"log"
@@ -14,23 +15,24 @@ import (
 
 func main() {
 	database, err := db.InitDB()
+
 	if err != nil {
 		log.Fatalf("Could not connect to DataBase: %v", err)
 	}
 
+	repo := taskService.NewTaskRepository(database)
+	service := taskService.NewTaskService(repo)
+
+	handler := handlers.NewTaskHandlers(service)
+
 	e := echo.New()
-
-	taskRepo := taskService.NewTaskRepository(database)
-	taskService := taskService.NewTaskService(taskRepo)
-	taskHandlers := handlers.NewTaskHandlers(taskService)
-
-	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
-	e.POST("/tasks", taskHandlers.PostTask)
-	e.GET("/tasks", taskHandlers.GetTasks)
-	e.PATCH("/tasks/:id", taskHandlers.PatchTask)
-	e.DELETE("/tasks/:id", taskHandlers.DeleteTask)
+	strictHandler := tasks.NewStrictHandler(handler, nil)
+	tasks.RegisterHandlers(e, strictHandler)
 
-	e.Start("localhost:8080")
+	if err := e.Start(":8080"); err != nil {
+		log.Fatalf("failed to start with err: %v", err)
+	}
 }

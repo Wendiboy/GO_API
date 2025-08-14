@@ -7,14 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB //переменная для работы с БД
+var db *gorm.DB
 
 func InitDB() (*gorm.DB, error) {
-	// Функция инициализации БД
-	dsn := "host=localhost user=postgres password=yourpassword dbname=postgres port=5432 sslmode=disable" //Data Source Name
+	dsn := "host=localhost user=postgres password=yourpassword dbname=postgres port=5432 sslmode=disable"
 	var err error
 
-	// Подключаемся к БД, если не удалось выдаем fatal
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v ", err)
