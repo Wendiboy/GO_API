@@ -35,10 +35,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
+  /tasks/{id}:
     patch:
       summary: Update a task
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       tags:
-        - tasks
+        - tasks      
       requestBody:
         description: The id and text of task to update
         required: true
@@ -55,8 +62,14 @@ paths:
                 $ref: '#/components/schemas/Task'
     delete:
       summary: Delete a task
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       tags:
-        - tasks
+        - tasks      
       requestBody:
         description: The id of task to delete
         required: true
@@ -67,7 +80,6 @@ paths:
       responses:
         '204':
           description: Task successfully deleted
-
 components:
   schemas:
     Task:
