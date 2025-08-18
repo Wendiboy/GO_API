@@ -56,6 +56,7 @@ func (h *TaskHandler) PostTasks(ctx context.Context, request tasks.PostTasksRequ
 	return response, nil
 }
 
+// [] поправить
 func (h *TaskHandler) PatchTasksId(ctx context.Context, request tasks.PatchTasksIdRequestObject) (tasks.PatchTasksIdResponseObject, error) {
 	id := request.Id
 	taskRequest := request.Body
@@ -71,8 +72,8 @@ func (h *TaskHandler) PatchTasksId(ctx context.Context, request tasks.PatchTasks
 	if err != nil {
 		return nil, err
 	}
-
-	response := tasks.PatchTasksId202JSONResponse{
+	// [] поправить
+	response := tasks.PatchTasksId200JSONResponse{
 		Id:     &id,
 		Task:   &updatedTask.TaskBody,
 		IsDone: &updatedTask.Is_done,
