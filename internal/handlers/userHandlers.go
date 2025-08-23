@@ -96,3 +96,27 @@ func (u *UserHandler) DeleteUsersId(ctx context.Context, request users.DeleteUse
 
 	return response, nil
 }
+
+func (u *UserHandler) GetUsersIdTasks(ctx context.Context, request users.GetUsersIdTasksRequestObject) (users.GetUsersIdTasksResponseObject, error) {
+	userID := request.Id
+
+	response := users.GetUsersIdTasks200JSONResponse{}
+
+	userTasks, err := u.service.GetTasksForUser(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range userTasks {
+		tasks := users.Task{
+			Id:     &v.Id,
+			IsDone: &v.Is_done,
+			Task:   &v.TaskBody,
+			UserId: &v.User_id,
+		}
+		response = append(response, tasks)
+	}
+
+	return response, nil
+}

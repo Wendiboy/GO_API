@@ -27,6 +27,7 @@ func (h *TaskHandler) GetTasks(_ context.Context, _ tasks.GetTasksRequestObject)
 			Id:     &tsk.Id,
 			Task:   &tsk.TaskBody,
 			IsDone: &tsk.Is_done,
+			UserId: &tsk.User_id,
 		}
 		response = append(response, task)
 	}
@@ -40,6 +41,7 @@ func (h *TaskHandler) PostTasks(ctx context.Context, request tasks.PostTasksRequ
 	taskToCreate := taskService.Task{
 		TaskBody: *taskRequest.Task,
 		Is_done:  *taskRequest.IsDone,
+		User_id:  *taskRequest.UserId,
 	}
 	createdTask, err := h.service.CreateTask(taskToCreate)
 
@@ -51,12 +53,12 @@ func (h *TaskHandler) PostTasks(ctx context.Context, request tasks.PostTasksRequ
 		Id:     &createdTask.Id,
 		Task:   &createdTask.TaskBody,
 		IsDone: &createdTask.Is_done,
+		UserId: &createdTask.User_id,
 	}
 
 	return response, nil
 }
 
-// [] поправить
 func (h *TaskHandler) PatchTasksId(ctx context.Context, request tasks.PatchTasksIdRequestObject) (tasks.PatchTasksIdResponseObject, error) {
 	id := request.Id
 	taskRequest := request.Body
@@ -65,6 +67,7 @@ func (h *TaskHandler) PatchTasksId(ctx context.Context, request tasks.PatchTasks
 		Id:       id,
 		TaskBody: *taskRequest.Task,
 		Is_done:  *taskRequest.IsDone,
+		User_id:  *taskRequest.UserId,
 	}
 
 	updatedTask, err := h.service.UpdateTask(taskToUpdate)
@@ -72,11 +75,12 @@ func (h *TaskHandler) PatchTasksId(ctx context.Context, request tasks.PatchTasks
 	if err != nil {
 		return nil, err
 	}
-	// [] поправить
+
 	response := tasks.PatchTasksId200JSONResponse{
 		Id:     &id,
 		Task:   &updatedTask.TaskBody,
 		IsDone: &updatedTask.Is_done,
+		UserId: &updatedTask.User_id,
 	}
 
 	return response, nil

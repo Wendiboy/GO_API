@@ -1,6 +1,10 @@
 package userService
 
-import "github.com/google/uuid"
+import (
+	"GO_API/internal/taskService"
+
+	"github.com/google/uuid"
+)
 
 type UserService interface {
 	CreateUser(user User) (User, error)
@@ -8,6 +12,7 @@ type UserService interface {
 	GetUserById(id string) (User, error)
 	UpdateUser(updatedUser User) (User, error)
 	DeleteUser(id string) error
+	GetTasksForUser(id string) ([]taskService.Task, error)
 }
 
 type userService struct {
@@ -61,4 +66,15 @@ func (s *userService) DeleteUser(id string) error {
 	}
 
 	return s.repo.DeleteUser(id)
+}
+
+func (s *userService) GetTasksForUser(userID string) ([]taskService.Task, error) {
+
+	userTasks, err := s.repo.GetUserTasks(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return userTasks, nil
 }

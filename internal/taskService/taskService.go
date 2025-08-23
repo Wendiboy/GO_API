@@ -53,6 +53,7 @@ func (s taskService) UpdateTask(updatedTask Task) (Task, error) {
 
 	task.TaskBody = updatedTask.TaskBody
 	task.Is_done = updatedTask.Is_done
+	task.User_id = updatedTask.User_id
 
 	if err := s.repo.UpdateTask(task); err != nil {
 		return Task{}, err
